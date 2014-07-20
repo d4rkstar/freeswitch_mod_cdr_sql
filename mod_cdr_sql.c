@@ -383,6 +383,7 @@ static void event_handler(switch_event_t *event)
 }
 
 
+
 static switch_state_handler_table_t state_handlers = {
 	/*.on_init */ NULL,
 	/*.on_routing */ NULL,
