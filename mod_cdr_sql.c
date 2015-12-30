@@ -49,7 +49,7 @@ static struct {
 	int db_port;
 	char *db_database;
 	char *db_username;
-    char *db_sock;
+        char *db_sock;
 	char *db_password;
 	char *db_table;
 	db_schema_t *db_schema;
@@ -366,7 +366,6 @@ static void event_handler(switch_event_t *event)
 	}
 
 	if (sig && !strcmp(sig, "HUP")) {
-		switch_mutex_lock(globals.db_mutex);
 		for (hi = switch_core_hash_first(globals.fd_hash); hi; hi = switch_core_hash_next(&hi)) {
 			switch_core_hash_this(hi, NULL, NULL, &val);
 			fd = (cdr_fd_t *) val;
@@ -374,14 +373,12 @@ static void event_handler(switch_event_t *event)
 			do_rotate(fd);
 			switch_mutex_unlock(fd->mutex);
 		}
-		switch_mutex_unlock(globals.db_mutex);
 		if (globals.db_online) {
 			//mysql_close(globals.db_connection);
 			//globals.db_online = 0;
 		}
 	}
 }
-
 
 
 static switch_state_handler_table_t state_handlers = {
@@ -442,6 +439,7 @@ static switch_status_t load_config(switch_memory_pool_t *pool)
 	}
 
 	//Checking if db connection is alive or not
+
 
 	memset(&globals, 0, sizeof(globals));
 	switch_core_hash_init(&globals.fd_hash);
